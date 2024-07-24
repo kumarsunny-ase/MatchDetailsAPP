@@ -8,6 +8,7 @@ using System.Xml;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MatchDetailsApp.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MatchDetailsApp.Controllers
 {
@@ -84,16 +85,16 @@ namespace MatchDetailsApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ValueDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ValueDto>>> GetAll()
         {
             try
             {
                 var values = await _matchDetailsDbContext.Values.ToListAsync();
 
-                var response = new List<ValueDTO>();
+                var response = new List<ValueDto>();
                 foreach (var item in values)
                 {
-                    response.Add(new ValueDTO
+                    response.Add(new ValueDto
                     {
                         MatchId = item.MatchId,
                         MatchDay = item.MatchDay,
@@ -115,7 +116,7 @@ namespace MatchDetailsApp.Controllers
         }
 
         [HttpGet("byMatchDay/{matchDay}")]
-        public async Task<ActionResult<IEnumerable<ValueDTO>>> GetByMatchDay(int matchDay)
+        public async Task<ActionResult<IEnumerable<ValueDto>>> GetByMatchDay(int matchDay)
         {
             try
             {
@@ -125,7 +126,7 @@ namespace MatchDetailsApp.Controllers
                     .OrderByDescending(v => v.PlannedKickoffTime)
                     .ToListAsync();
 
-                var response = values.Select(v => new ValueDTO
+                var response = values.Select(v => new ValueDto
                 {
                     MatchDay = v.MatchDay,
                     HomeTeamName = v.HomeTeamName,

@@ -6,7 +6,7 @@ namespace MatchDetailsApp.Data
 {
 	public class MatchDetailsDbContext : DbContext
 	{
-        public MatchDetailsDbContext(DbContextOptions options) : base(options)
+        public MatchDetailsDbContext(DbContextOptions<MatchDetailsDbContext> options) : base(options)
         {
         }
 

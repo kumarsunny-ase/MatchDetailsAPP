@@ -31,7 +31,7 @@ namespace MatchDetailsApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("MatchDetailsApp.Models.Domain.Value", b =>
@@ -65,7 +65,7 @@ namespace MatchDetailsApp.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("Values");
+                    b.ToTable("Values", (string)null);
                 });
 
             modelBuilder.Entity("MatchDetailsApp.Models.Domain.Value", b =>

@@ -3,7 +3,7 @@ using MatchDetailsApp.Models.Domain;
 
 namespace MatchDetailsApp.Models.DTOs
 {
-	public class ValueDTO
+	public class ValueDto
 	{
         public string MatchId { get; set; }
         public int MatchDay { get; set; }
