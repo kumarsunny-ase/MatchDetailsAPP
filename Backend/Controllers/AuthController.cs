@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MatchDetailsApp.Models.DTOs;
+using MatchDetailsApp.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +12,12 @@ namespace MatchDetailsApp.Controllers
     public class AuthController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly TokenRepository _tokenRepository;
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager, TokenRepository tokenRepository)
         {
             _userManager = userManager;
+            _tokenRepository = tokenRepository;
         }
 
         [HttpPost]
@@ -32,12 +35,13 @@ namespace MatchDetailsApp.Controllers
                     var roles = await _userManager.GetRolesAsync(identityUser);
 
                     //Create a Token and Response
+                    var jwtToken = _tokenRepository.CreateJwtToken(identityUser, roles.ToList());
 
                     var response = new LoginResponseDto()
                     {
                         Email = request.Email,
                         Roles = roles.ToList(),
-                        Token = "TOKEN"
+                        Token = jwtToken
                     };
 
                     return Ok(response);

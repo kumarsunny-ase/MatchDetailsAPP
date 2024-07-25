@@ -42,33 +42,52 @@ namespace MatchDetailsApp.Controllers
                     var nodeList = xmlDoc.DocumentElement.SelectNodes("/PutDataRequest/Fixtures/Fixture");
                     foreach (XmlNode node in nodeList)
                     {
-                        var newItem = new Item
+                        var matchId = node.Attributes["MatchId"].Value;
+                        var matchDay = int.Parse(node.Attributes["MatchDay"].Value);
+                        var homeTeamName = node.Attributes["HomeTeamName"].Value;
+                        var guestTeamName = node.Attributes["GuestTeamName"].Value;
+                        var plannedKickoffTime = node.Attributes["PlannedKickoffTime"].Value;
+                        var stadiumName = node.Attributes["StadiumName"].Value;
+
+                        // Check if the item already exists
+                        var existingValue = await _matchDetailsDbContext.Values
+                            .FirstOrDefaultAsync(v => v.MatchId == matchId);
+
+                        if (existingValue != null)
                         {
-
-                        };
-
-                        // Create a new Value from the Fixture node
-                        var newValue = new Value
+                            // Update existing record
+                            existingValue.MatchDay = matchDay;
+                            existingValue.HomeTeamName = homeTeamName;
+                            existingValue.GuestTeamName = guestTeamName;
+                            existingValue.PlannedKickoffTime = plannedKickoffTime;
+                            existingValue.StadiumName = stadiumName;
+                        }
+                        else
                         {
-                            MatchId = node.Attributes["MatchId"].Value,
-                            MatchDay = int.Parse(node.Attributes["MatchDay"].Value),
-                            HomeTeamName = node.Attributes["HomeTeamName"].Value,
-                            GuestTeamName = node.Attributes["GuestTeamName"].Value,
-                            PlannedKickoffTime = node.Attributes["PlannedKickoffTime"].Value,
-                            StadiumName = node.Attributes["StadiumName"].Value,
-                            ItemId = newItem.Id  // This will need to be set after the Item is saved
-                        };
+                            // Create a new Item and Value
+                            var newItem = new Item();
 
-                        newItem.Values = new List<Value> { newValue };
+                            var newValue = new Value
+                            {
+                                MatchId = matchId,
+                                MatchDay = matchDay,
+                                HomeTeamName = homeTeamName,
+                                GuestTeamName = guestTeamName,
+                                PlannedKickoffTime = plannedKickoffTime,
+                                StadiumName = stadiumName,
+                                ItemId = newItem.Id // This will need to be set after the Item is saved
+                            };
 
+                            newItem.Values = new List<Value> { newValue };
 
-                        _matchDetailsDbContext.Items.Add(newItem);
+                            _matchDetailsDbContext.Items.Add(newItem);
+                        }
                     }
 
                     await _matchDetailsDbContext.SaveChangesAsync();
                 }
 
-                return Ok("File uploaded and data saved.");
+                return Ok(new { message = "File uploaded and data saved." });
             }
             catch (XmlException xmlEx)
             {
@@ -85,6 +104,7 @@ namespace MatchDetailsApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<ValueDto>>> GetAll()
         {
             try
