@@ -2,12 +2,16 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldControl } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatchListService } from '../../services/match-list.service';
 import { CommonModule } from '@angular/common';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatOption } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { ValueDto } from '../../models/ValueDto';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-match-list',
@@ -16,8 +20,13 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
     ReactiveFormsModule,
     MatCardModule,
     MatButtonModule,
+    MatFormField,
+    MatOption,
+    MatLabel,
+    MatSelectModule,
+    MatFormFieldModule,
     MatProgressBarModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './match-list.component.html',
   styleUrl: './match-list.component.css',
@@ -28,8 +37,15 @@ export class MatchListComponent {
   uploadProgress: number = -1;
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  matchDays: number[] = [];
+  selectedMatchDay: number | null = null;
+  matchDetails: any[] = [];
 
-  constructor( private fb: FormBuilder, private matchListService: MatchListService) {
+  constructor(
+    private fb: FormBuilder,
+    private matchListService: MatchListService,
+    private router: Router
+  ) {
     this.uploadForm = this.fb.group({});
   }
 
@@ -51,6 +67,7 @@ export class MatchListComponent {
             const responseBody: any = response.body || response;
             this.successMessage =
               responseBody.message || 'File uploaded successfully.';
+            this.matchDays = responseBody.matchDays || [];
           } else {
             this.errorMessage = `Unexpected response status: ${response.status}`;
           }
@@ -62,5 +79,16 @@ export class MatchListComponent {
       );
     }
   }
-}
 
+  onMatchDaySelect(selectedMatchDay: number): void {
+    if (selectedMatchDay) {
+      // Navigate to match details page with the selected match day as a query parameter
+      this.router.navigate(['/match/details'], {
+        queryParams: { day: selectedMatchDay },
+      });
+    } else {
+      console.error('Selected matchDay is undefined or invalid');
+      this.errorMessage = 'Please select a valid match day.';
+    }
+  }
+}

@@ -33,6 +33,8 @@ namespace MatchDetailsApp.Controllers
 
             try
             {
+                var matchDays = new HashSet<int>();
+
                 using (var stream = new StreamReader(file.OpenReadStream()))
                 {
                     var xmlDoc = new XmlDocument();
@@ -44,6 +46,7 @@ namespace MatchDetailsApp.Controllers
                     {
                         var matchId = node.Attributes["MatchId"].Value;
                         var matchDay = int.Parse(node.Attributes["MatchDay"].Value);
+                        matchDays.Add(matchDay);
                         var homeTeamName = node.Attributes["HomeTeamName"].Value;
                         var guestTeamName = node.Attributes["GuestTeamName"].Value;
                         var plannedKickoffTime = node.Attributes["PlannedKickoffTime"].Value;
@@ -87,7 +90,7 @@ namespace MatchDetailsApp.Controllers
                     await _matchDetailsDbContext.SaveChangesAsync();
                 }
 
-                return Ok(new { message = "File uploaded and data saved." });
+                return Ok(new { message = "File uploaded and data saved.", matchDays = matchDays.ToList() });
             }
             catch (XmlException xmlEx)
             {
@@ -104,7 +107,7 @@ namespace MatchDetailsApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<ValueDto>>> GetAll()
         {
             try
@@ -116,13 +119,11 @@ namespace MatchDetailsApp.Controllers
                 {
                     response.Add(new ValueDto
                     {
-                        MatchId = item.MatchId,
                         MatchDay = item.MatchDay,
                         HomeTeamName = item.HomeTeamName,
                         GuestTeamName = item.GuestTeamName,
                         PlannedKickoffTime = item.PlannedKickoffTime,
                         StadiumName = item.StadiumName,
-                        ItemId = item.ItemId,
                     });
                 }
 

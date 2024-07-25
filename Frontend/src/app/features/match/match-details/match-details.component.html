@@ -1,0 +1,43 @@
+<div *ngIf="matchDay">
+    <h3 class="match-day-title">Match Details for Match Day {{ matchDay }}</h3>
+
+    <table mat-table [dataSource]="matchDetails" class="mat-elevation-z8">
+        <!-- Home Team Column -->
+        <ng-container matColumnDef="homeTeamName">
+            <th mat-header-cell *matHeaderCellDef> Home Team </th>
+            <td mat-cell *matCellDef="let detail"> {{ detail.homeTeamName }} </td>
+        </ng-container>
+
+        <!-- Guest Team Column -->
+        <ng-container matColumnDef="guestTeamName">
+            <th mat-header-cell *matHeaderCellDef> Guest Team </th>
+            <td mat-cell *matCellDef="let detail"> {{ detail.guestTeamName }} </td>
+        </ng-container>
+
+        <!-- Kickoff Time Column -->
+        <ng-container matColumnDef="plannedKickoffTime">
+            <th mat-header-cell *matHeaderCellDef> Kickoff Time </th>
+            <td mat-cell *matCellDef="let detail"> {{ detail.plannedKickoffTime }} </td>
+        </ng-container>
+
+        <!-- Stadium Column -->
+        <ng-container matColumnDef="stadiumName">
+            <th mat-header-cell *matHeaderCellDef> Stadium </th>
+            <td mat-cell *matCellDef="let detail"> {{ detail.stadiumName }} </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+</div>
+
+<!-- Error Message Display -->
+<div *ngIf="errorMessage">
+    <mat-card class="error-message-card">
+        <mat-card-content>
+            <p class="error">{{ errorMessage }}</p>
+        </mat-card-content>
+    </mat-card>
+</div>

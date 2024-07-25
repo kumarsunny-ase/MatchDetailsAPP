@@ -1,0 +1,26 @@
+/* match-details.component.css */
+
+.match-day-title {
+  text-align: center;
+  margin: 2px 0; /* Optional: Adjust margin as needed */
+}
+
+.mat-table {
+  width: 80%;
+  max-width: 800px;
+  border-collapse: collapse;
+  margin: 16px auto; /* Add margin as needed */
+}
+
+.mat-header-cell {
+    font-size: 16px;
+    font-weight: bold; /* Make text bold */
+    text-align: center; /* Center-align text */
+    padding: 12px; /* Add padding for spacing */
+    border: 1px solid rgba(25, 24, 24, 0.12); /* Light border around cells */
+    border-bottom: 2px solid #004d40; /* Bottom border color */
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.12); 
+}
+h3{
+    background-color: #87e9e3;
+}

@@ -1,0 +1,18 @@
+mat-toolbar {
+  background-color: #2196F3; /* Replace with your desired color */
+}
+mat-toolbar a {
+  color: #fff; /* Change link text color */
+  font-size: 16px; /* Change link font size */
+  font-weight: bold; /* Make link text bold */
+  text-decoration: none; /* Remove underline from links */
+}
+
+mat-toolbar a:hover {
+  color: #ffeb3b; /* Change color on hover */
+}
+
+.mat-toolbar .mat-icon {
+  color: #fff; /* Change icon color */
+  font-size: 24px; /* Change icon size */
+}
