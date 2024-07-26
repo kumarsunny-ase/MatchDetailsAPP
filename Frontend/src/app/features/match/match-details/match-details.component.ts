@@ -3,13 +3,23 @@ import { ValueDto } from '../../models/ValueDto';
 import { MatchListService } from '../../services/match-list.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOption, MatSelectModule } from '@angular/material/select';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-match-details',
   standalone: true,
-  imports: [MatCardModule, CommonModule, MatTableModule],
+  imports: [
+    MatCardModule,
+    CommonModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatOption,
+    MatSelectModule,
+  ],
   templateUrl: './match-details.component.html',
   styleUrl: './match-details.component.css',
 })
@@ -17,6 +27,8 @@ export class MatchDetailsComponent implements OnInit {
   matchDay?: number;
   matchDetails: ValueDto[] = [];
   errorMessage?: string;
+  selectedMatchDay: number | null = null;
+  matchDays: number[] = [];
 
   displayedColumns: string[] = [
     'homeTeamName',
@@ -27,10 +39,15 @@ export class MatchDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private matchListService: MatchListService
+    private matchListService: MatchListService,
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.matchListService.matchDays$.subscribe((matchDays) => {
+      this.matchDays = matchDays;
+    });
     this.route.queryParams.subscribe((params) => {
       const matchDayParam = params['day'];
       if (matchDayParam) {
@@ -49,5 +66,17 @@ export class MatchDetailsComponent implements OnInit {
         this.errorMessage = 'Invalid match day.';
       }
     });
+  }
+
+  onMatchDaySelect(selectedMatchDay: number): void {
+    if (selectedMatchDay) {
+      // Navigate to match details page with the selected match day as a query parameter
+      this.router.navigate(['/match/details'], {
+        queryParams: { day: selectedMatchDay },
+      });
+    } else {
+      console.error('Selected matchDay is undefined or invalid');
+      this.errorMessage = 'Please select a valid match day.';
+    }
   }
 }

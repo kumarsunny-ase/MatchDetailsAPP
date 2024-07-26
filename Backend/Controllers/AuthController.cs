@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MatchDetailsApp.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AuthController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -24,53 +26,74 @@ namespace MatchDetailsApp.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
-            var identityUser = await _userManager.FindByEmailAsync(request.Email);
-
-            if(identityUser is not null)
+            try
             {
-                var checkPasswordResult = await _userManager.CheckPasswordAsync(identityUser, request.Password);
+                var identityUser = await _userManager.FindByEmailAsync(request.Email);
 
-                if(checkPasswordResult)
+                if (identityUser is not null)
                 {
-                    var roles = await _userManager.GetRolesAsync(identityUser);
+                    var checkPasswordResult = await _userManager.CheckPasswordAsync(identityUser, request.Password);
 
-                    //Create a Token and Response
-                    var jwtToken = _tokenRepository.CreateJwtToken(identityUser, roles.ToList());
-
-                    var response = new LoginResponseDto()
+                    if (checkPasswordResult)
                     {
-                        Email = request.Email,
-                        Roles = roles.ToList(),
-                        Token = jwtToken
-                    };
+                        var roles = await _userManager.GetRolesAsync(identityUser);
 
-                    return Ok(response);
+                        //Create a Token and Response
+                        var jwtToken = _tokenRepository.CreateJwtToken(identityUser, roles.ToList());
+
+                        var response = new LoginResponseDto()
+                        {
+                            Email = request.Email,
+                            Roles = roles.ToList(),
+                            Token = jwtToken
+                        };
+
+                        return Ok(response);
+                    }
                 }
-            }
-            ModelState.AddModelError("", "Email or Password Incorrect");
 
-            return ValidationProblem(ModelState);
+                ModelState.AddModelError("", "Email or Password Incorrect");
+                return ValidationProblem(ModelState);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An unexpected error occurred. Please try again later : {ex.Message}");
+            }
+            
         }
 
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
-            var user = new IdentityUser
+            try
             {
-                UserName = request.Email?.Trim(),
-                Email = request.Email?.Trim()
-            };
-
-            var identityResult = await _userManager.CreateAsync(user, request.Password);
-
-            if(identityResult.Succeeded)
-            {
-                identityResult = await _userManager.AddToRoleAsync(user, "User");
-
-                if(identityResult.Succeeded)
+                var user = new IdentityUser
                 {
-                    return Ok();
+                    UserName = request.Email?.Trim(),
+                    Email = request.Email?.Trim()
+                };
+
+                var identityResult = await _userManager.CreateAsync(user, request.Password);
+
+                if (identityResult.Succeeded)
+                {
+                    identityResult = await _userManager.AddToRoleAsync(user, "User");
+
+                    if (identityResult.Succeeded)
+                    {
+                        return Ok();
+                    }
+                    else
+                    {
+                        if (identityResult.Errors.Any())
+                        {
+                            foreach (var error in identityResult.Errors)
+                            {
+                                ModelState.AddModelError("", error.Description);
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -82,19 +105,14 @@ namespace MatchDetailsApp.Controllers
                         }
                     }
                 }
-            }
-            else
-            {
-                if(identityResult.Errors.Any())
-                {
-                    foreach (var error in identityResult.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
-            }
 
-            return ValidationProblem(ModelState);
+                return ValidationProblem(ModelState);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An unexpected error occurred. Please try again later: {ex.Message}");
+            }
+            
         }
     }
 }

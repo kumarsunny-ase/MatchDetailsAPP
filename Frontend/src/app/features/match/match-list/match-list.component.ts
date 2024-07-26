@@ -65,9 +65,9 @@ export class MatchListComponent {
             (response.status === 200 || response.status === 201)
           ) {
             const responseBody: any = response.body || response;
-            this.successMessage =
-              responseBody.message || 'File uploaded successfully.';
+            this.successMessage = responseBody.message;
             this.matchDays = responseBody.matchDays || [];
+            this.matchListService.setMatchDays(this.matchDays);
           } else {
             this.errorMessage = `Unexpected response status: ${response.status}`;
           }

@@ -24,6 +24,7 @@ namespace MatchDetailsApp.Controllers
         }
 
         [HttpPost("upload")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UploadXml(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -90,7 +91,7 @@ namespace MatchDetailsApp.Controllers
                     await _matchDetailsDbContext.SaveChangesAsync();
                 }
 
-                return Ok(new { message = "File uploaded and data saved.", matchDays = matchDays.ToList() });
+                return Ok(new { message = "File uploaded and data saved!", matchDays = matchDays.ToList() });
             }
             catch (XmlException xmlEx)
             {
@@ -107,7 +108,7 @@ namespace MatchDetailsApp.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<ValueDto>>> GetAll()
         {
             try
@@ -137,6 +138,7 @@ namespace MatchDetailsApp.Controllers
         }
 
         [HttpGet("byMatchDay/{matchDay}")]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<ValueDto>>> GetByMatchDay(int matchDay)
         {
             try
