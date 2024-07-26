@@ -13,12 +13,16 @@
     <None Remove="Data\" />
     <None Remove="Models\DTOs\" />
     <None Remove="Repositories\" />
+    <None Remove="Repositories\Interface\" />
+    <None Remove="Repositories\Implementation\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Domain\" />
     <Folder Include="Data\" />
     <Folder Include="Models\DTOs\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Repositories\Interface\" />
+    <Folder Include="Repositories\Implementation\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />

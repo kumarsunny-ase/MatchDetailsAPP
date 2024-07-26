@@ -9,20 +9,33 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MatchDetailsApp.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using MatchDetailsApp.Repositories.Implementation;
 
 namespace MatchDetailsApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    /// <summary>
+    /// Controller for handling XML file uploads and retrieval of match data.
+    /// </summary>
     public class XmlFileController : Controller
     {
-        private readonly MatchDetailsDbContext _matchDetailsDbContext;
+        private readonly XmlFileRepository _xmlFileRepository;
 
-        public XmlFileController(MatchDetailsDbContext matchDetailsDbContext)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlFileController"/> class.
+        /// </summary>
+        /// <param name="xmlFileRepository">The XML file repository.</param>
+        public XmlFileController(XmlFileRepository xmlFileRepository)
         {
-            _matchDetailsDbContext = matchDetailsDbContext;
+            _xmlFileRepository = xmlFileRepository;
         }
 
+        /// <summary>
+        /// Uploads an XML file and processes it to store match data.
+        /// </summary>
+        /// <param name="file">The XML file containing match data.</param>
+        /// <returns>A response indicating the result of the upload operation.</returns>
         [HttpPost("upload")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> UploadXml(IFormFile file)
@@ -34,64 +47,8 @@ namespace MatchDetailsApp.Controllers
 
             try
             {
-                var matchDays = new HashSet<int>();
-
-                using (var stream = new StreamReader(file.OpenReadStream()))
-                {
-                    var xmlDoc = new XmlDocument();
-                    xmlDoc.Load(stream);
-
-                    // Assuming a structure for the XML and database models
-                    var nodeList = xmlDoc.DocumentElement.SelectNodes("/PutDataRequest/Fixtures/Fixture");
-                    foreach (XmlNode node in nodeList)
-                    {
-                        var matchId = node.Attributes["MatchId"].Value;
-                        var matchDay = int.Parse(node.Attributes["MatchDay"].Value);
-                        matchDays.Add(matchDay);
-                        var homeTeamName = node.Attributes["HomeTeamName"].Value;
-                        var guestTeamName = node.Attributes["GuestTeamName"].Value;
-                        var plannedKickoffTime = node.Attributes["PlannedKickoffTime"].Value;
-                        var stadiumName = node.Attributes["StadiumName"].Value;
-
-                        // Check if the item already exists
-                        var existingValue = await _matchDetailsDbContext.Values
-                            .FirstOrDefaultAsync(v => v.MatchId == matchId);
-
-                        if (existingValue != null)
-                        {
-                            // Update existing record
-                            existingValue.MatchDay = matchDay;
-                            existingValue.HomeTeamName = homeTeamName;
-                            existingValue.GuestTeamName = guestTeamName;
-                            existingValue.PlannedKickoffTime = plannedKickoffTime;
-                            existingValue.StadiumName = stadiumName;
-                        }
-                        else
-                        {
-                            // Create a new Item and Value
-                            var newItem = new Item();
-
-                            var newValue = new Value
-                            {
-                                MatchId = matchId,
-                                MatchDay = matchDay,
-                                HomeTeamName = homeTeamName,
-                                GuestTeamName = guestTeamName,
-                                PlannedKickoffTime = plannedKickoffTime,
-                                StadiumName = stadiumName,
-                                ItemId = newItem.Id // This will need to be set after the Item is saved
-                            };
-
-                            newItem.Values = new List<Value> { newValue };
-
-                            _matchDetailsDbContext.Items.Add(newItem);
-                        }
-                    }
-
-                    await _matchDetailsDbContext.SaveChangesAsync();
-                }
-
-                return Ok(new { message = "File uploaded and data saved!", matchDays = matchDays.ToList() });
+                var matchDays = await _xmlFileRepository.ProcessXmlFileAsync(file);
+                return Ok(new { message = "File uploaded and data saved!", matchDays = matchDays.ToList()});
             }
             catch (XmlException xmlEx)
             {
@@ -107,26 +64,25 @@ namespace MatchDetailsApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves all match data.
+        /// </summary>
+        /// <returns>A list of all match data.</returns>
         [HttpGet]
         [Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<ValueDto>>> GetAll()
         {
             try
             {
-                var values = await _matchDetailsDbContext.Values.ToListAsync();
-
-                var response = new List<ValueDto>();
-                foreach (var item in values)
+                var values = await _xmlFileRepository.GetAllAsync();
+                var response = values.Select(value => new ValueDto
                 {
-                    response.Add(new ValueDto
-                    {
-                        MatchDay = item.MatchDay,
-                        HomeTeamName = item.HomeTeamName,
-                        GuestTeamName = item.GuestTeamName,
-                        PlannedKickoffTime = item.PlannedKickoffTime,
-                        StadiumName = item.StadiumName,
-                    });
-                }
+                    MatchDay = value.MatchDay,
+                    HomeTeamName = value.HomeTeamName,
+                    GuestTeamName = value.GuestTeamName,
+                    PlannedKickoffTime = value.PlannedKickoffTime,
+                    StadiumName = value.StadiumName,
+                }).ToList();
 
                 return Ok(response);
             }
@@ -137,18 +93,18 @@ namespace MatchDetailsApp.Controllers
 
         }
 
+        /// <summary>
+        /// Retrieves match data for a specific match day.
+        /// </summary>
+        /// <param name="matchDay">The match day to filter by.</param>
+        /// <returns>A list of match data for the specified match day.</returns>
         [HttpGet("byMatchDay/{matchDay}")]
         [Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<ValueDto>>> GetByMatchDay(int matchDay)
         {
             try
             {
-                var values = await _matchDetailsDbContext.Values
-                    .Where(v => v.MatchDay == matchDay)
-                    .Include(v => v.Item)
-                    .OrderByDescending(v => v.PlannedKickoffTime)
-                    .ToListAsync();
-
+                var values = await _xmlFileRepository.GetByDay(matchDay);
                 var response = values.Select(v => new ValueDto
                 {
                     MatchDay = v.MatchDay,

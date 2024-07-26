@@ -1,6 +1,8 @@
 ﻿using MatchDetailsApp.Data;
 using MatchDetailsApp.Models.Domain;
 using MatchDetailsApp.Repositories;
+using MatchDetailsApp.Repositories.Implementation;
+using MatchDetailsApp.Repositories.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +25,7 @@ builder.Services.AddDbContext<AuthDbContext>(opt =>
 });
 
 builder.Services.AddScoped<TokenRepository>();
+builder.Services.AddScoped<XmlFileRepository>();
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddRoles<IdentityRole>()

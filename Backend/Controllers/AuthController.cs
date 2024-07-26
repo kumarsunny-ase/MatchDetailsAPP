@@ -11,19 +11,31 @@ namespace MatchDetailsApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    /// <summary>
+    /// Controller for handling user authentication tasks such as login and registration.
+    /// </summary>
     public class AuthController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly TokenRepository _tokenRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthController"/> class.
+        /// </summary>
+        /// <param name="userManager">The user manager for handling user-related operations.</param>
+        /// <param name="tokenRepository">The token repository for handling JWT tokens.</param>
         public AuthController(UserManager<IdentityUser> userManager, TokenRepository tokenRepository)
         {
             _userManager = userManager;
             _tokenRepository = tokenRepository;
         }
 
-        [HttpPost]
-        [Route("login")]
+        /// <summary>
+        /// Logs in a user by validating their email and password and generating a JWT token.
+        /// </summary>
+        /// <param name="request">The login request containing the user's email and password.</param>
+        /// <returns>A response with the user's email, roles, and JWT token if successful; otherwise, a validation problem response.</returns>
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
             try
@@ -62,8 +74,12 @@ namespace MatchDetailsApp.Controllers
             
         }
 
-        [HttpPost]
-        [Route("register")]
+        /// <summary>
+        /// Registers a new user with the provided email and password.
+        /// </summary>
+        /// <param name="request">The registration request containing the user's email and password.</param>
+        /// <returns>A response indicating the result of the registration operation.</returns>
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
             try
@@ -88,6 +104,7 @@ namespace MatchDetailsApp.Controllers
                     {
                         if (identityResult.Errors.Any())
                         {
+                            // Adding model state errors from AddToRoleAsync
                             foreach (var error in identityResult.Errors)
                             {
                                 ModelState.AddModelError("", error.Description);
@@ -99,6 +116,7 @@ namespace MatchDetailsApp.Controllers
                 {
                     if (identityResult.Errors.Any())
                     {
+                        // Adding model state errors from CreateAsync
                         foreach (var error in identityResult.Errors)
                         {
                             ModelState.AddModelError("", error.Description);
@@ -110,6 +128,7 @@ namespace MatchDetailsApp.Controllers
             }
             catch (Exception ex)
             {
+                // Return a 500 status code with error message if an unexpected error occurs
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An unexpected error occurred. Please try again later: {ex.Message}");
             }
             
