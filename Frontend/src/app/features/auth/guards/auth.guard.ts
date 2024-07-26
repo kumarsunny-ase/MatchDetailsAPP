@@ -10,37 +10,39 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const user = authService.getUser();
 
-  // check the JWT Token
+  // Retrieve and decode the JWT Token
   let token = cookieService.get('Authorization');
 
-  if(token && user) {
+  if (token && user) {
     token = token.replace('Bearer ', '');
     const decodedToken: any = jwtDecode(token);
 
-    // Check if tokken has expired
+    // Check if token has expired
     const expirationDate = decodedToken.exp * 1000;
     const currentTime = new Date().getTime();
-    
 
-    if(expirationDate < currentTime ) {
-      // Logout
+    if (expirationDate < currentTime) {
+      // Token expired: logout and redirect
       authService.logout();
       return router.createUrlTree([''], {
         queryParams: { returnUrl: state.url },
-      })
+      });
     } else {
-      // Token is still valid
-
-      if(user.roles.includes('User')) {
-        return true;
+      // Token is valid: check user roles
+      if (user.roles.includes('User')) {
+        return true; // User is authorized
       } else {
+        // User does not have the required role
+        // used MatSnackBar for better user feedback
         alert('Unauthorized');
         return false;
       }
     }
   } else {
-    // Logout
+    // No token or user: logout and redirect
     authService.logout();
-    return router.createUrlTree([''], {queryParams: { returnUrl: state.url }})
+    return router.createUrlTree([''], {
+      queryParams: { returnUrl: state.url },
+    });
   }
 };
