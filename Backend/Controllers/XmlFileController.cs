@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using MatchDetailsApp.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using MatchDetailsApp.Repositories.Implementation;
+using System.Globalization;
 
 namespace MatchDetailsApp.Controllers
 {
@@ -37,7 +38,7 @@ namespace MatchDetailsApp.Controllers
         /// <param name="file">The XML file containing match data.</param>
         /// <returns>A response indicating the result of the upload operation.</returns>
         [HttpPost("upload")]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
         public async Task<IActionResult> UploadXml(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -47,8 +48,8 @@ namespace MatchDetailsApp.Controllers
 
             try
             {
-                var matchDays = await _xmlFileRepository.ProcessXmlFileAsync(file);
-                return Ok(new { message = "File uploaded and data saved!", matchDays = matchDays.ToList()});
+                var matchData = await _xmlFileRepository.ProcessXmlFileAsync(file);
+                return Ok(new { message = "File uploaded and data saved!", matchDays = matchData.MatchDays, matchDates = matchData.MatchDates.ToList() });
             }
             catch (XmlException xmlEx)
             {
@@ -118,6 +119,32 @@ namespace MatchDetailsApp.Controllers
             }
             catch (Exception ex)
             {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while fetching values: {ex.Message}");
+            }
+        }
+
+        [HttpGet("byMatchDate/{matchDate}")]
+        //[Authorize(Roles = "User")]
+        public async Task<ActionResult<IEnumerable<MatchDateValueDto>>> GetByMatchDate(DateTime matchDate)
+        {
+            try
+            {
+                // Adjust repository call to use the new date-based method
+                var values = await _xmlFileRepository.GetByDate(matchDate);
+
+                // Transform entities into DTOs
+                var response = values.Select(v => new MatchDateValueDto
+                {
+                    HomeTeamName = v.HomeTeamName,
+                    GuestTeamName = v.GuestTeamName,
+                    StadiumName = v.StadiumName,
+                }).ToList();
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and return a server error response
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while fetching values: {ex.Message}");
             }
         }

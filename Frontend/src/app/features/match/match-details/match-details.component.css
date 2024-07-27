@@ -21,6 +21,18 @@
     border-bottom: 2px solid #004d40; /* Bottom border color */
     box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.12); 
 }
+
 h3{
     background-color: #87e9e3;
+}
+
+.dropdown-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.dropdown-card {
+  width: 100%;
+  max-width: 400px;
 }

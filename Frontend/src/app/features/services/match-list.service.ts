@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ValueDto } from '../models/ValueDto';
 import { CookieService } from 'ngx-cookie-service';
+import { MatchDateValueDto } from '../models/match-dateValue-request';
 
 @Injectable({
   providedIn: 'root',
@@ -31,8 +32,8 @@ export class MatchListService {
   getMatchDetailsByDay(matchDay: number): Observable<ValueDto[]> {
     return this.http.get<ValueDto[]>(`${this.apiUrl}/byMatchDay/${matchDay}`, {
       headers: {
-        'Authorization': this.cookieService.get('Authorization')
-      }
+        Authorization: this.cookieService.get('Authorization'),
+      },
     });
   }
   private matchDaysSubject = new BehaviorSubject<any[]>([]);
@@ -40,5 +41,22 @@ export class MatchListService {
 
   setMatchDays(matchDays: any[]) {
     this.matchDaysSubject.next(matchDays);
+  }
+
+  getMatchesByDate(date: Date): Observable<MatchDateValueDto[]> {
+    // Format the date in a suitable string format if needed
+    const formattedDate = date.toISOString().split('T')[0];
+    console.log('from service', formattedDate); // Example format YYYY-MM-DD
+    return this.http.get<MatchDateValueDto[]>(
+      `${this.apiUrl}/byMatchDate/${formattedDate}`
+    );
+  }
+
+  private matchDateSubject = new BehaviorSubject<any[]>([]);
+  matchDates$ = this.matchDateSubject.asObservable();
+
+  setMatchDates(matchDates: any[]): void {
+    this.matchDateSubject.next(matchDates);
+    console.log(matchDates)
   }
 }

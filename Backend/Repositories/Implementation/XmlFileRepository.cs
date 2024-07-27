@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Xml;
 using MatchDetailsApp.Data;
 using MatchDetailsApp.Models.Domain;
@@ -28,9 +29,10 @@ namespace MatchDetailsApp.Repositories.Implementation
         /// </summary>
         /// <param name="file">The XML file containing match details.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a set of match days extracted from the XML file.</returns>
-        public async Task<HashSet<int>> ProcessXmlFileAsync(IFormFile file)
+        public async Task<(HashSet<int> MatchDays, HashSet<DateTime> MatchDates)> ProcessXmlFileAsync(IFormFile file)
         {
             var matchDays = new HashSet<int>();
+            var matchDates = new HashSet<DateTime>();
 
             using (var stream = new StreamReader(file.OpenReadStream()))
             {
@@ -45,7 +47,8 @@ namespace MatchDetailsApp.Repositories.Implementation
                     matchDays.Add(matchDay);
                     var homeTeamName = node.Attributes["HomeTeamName"].Value;
                     var guestTeamName = node.Attributes["GuestTeamName"].Value;
-                    var plannedKickoffTime = node.Attributes["PlannedKickoffTime"].Value;
+                    var plannedKickoffTime = DateTime.Parse(node.Attributes["PlannedKickoffTime"].Value); ;
+                    matchDates.Add(plannedKickoffTime);
                     var stadiumName = node.Attributes["StadiumName"].Value;
 
                     var newValue = new Value
@@ -63,7 +66,7 @@ namespace MatchDetailsApp.Repositories.Implementation
                 }
             }
 
-            return matchDays;
+            return (matchDays, matchDates);
         }
 
         /// <summary>
@@ -84,6 +87,26 @@ namespace MatchDetailsApp.Repositories.Implementation
         {
             return await _matchDetailsDbContext.Values.Where(x => x.MatchDay == id)
                 .Include(x => x.Item).OrderByDescending(x => x.PlannedKickoffTime)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Value>> GetByDate(DateTime matchDate)
+        {
+            // Parse the date string from the format received from the frontend (assuming MM/DD/YYYY)
+            string formattedDate = matchDate.ToString("yyyy-MM-dd");
+
+            // Convert the formatted string to a DateTime object for database comparison
+            DateTime databaseDate = DateTime.ParseExact(formattedDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            // Extract the start and end of the day for the given date
+            var startOfDay = databaseDate.Date;
+            var endOfDay = startOfDay.AddDays(1).AddTicks(-1);
+
+            // Query to get values scheduled for the specified date
+            return await _matchDetailsDbContext.Values
+                .Where(x => x.PlannedKickoffTime >= startOfDay && x.PlannedKickoffTime <= endOfDay)
+                .Include(x => x.Item)
+                .OrderByDescending(x => x.PlannedKickoffTime)
                 .ToListAsync();
         }
 

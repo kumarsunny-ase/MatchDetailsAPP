@@ -42,8 +42,7 @@
 </div>
 
 <div *ngIf="matchDays.length > 0" class="dropdown-container">
-    <mat-card class="dropdown-card">
-        <mat-card-content>
+        <mat-card-content class="dropdown-card">
             <mat-form-field appearance="fill">
                 <mat-label>Select Match Day</mat-label>
                 <mat-select (selectionChange)="onMatchDaySelect($event.value)">
@@ -51,4 +50,4 @@
                 </mat-select>
             </mat-form-field>
         </mat-card-content>
-    </mat-card>
+</div>

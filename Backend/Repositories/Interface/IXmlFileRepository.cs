@@ -5,13 +5,15 @@ namespace MatchDetailsApp.Repositories.Interface
 {
 	public interface IXmlFileRepository
 	{
-        Task<HashSet<int>> ProcessXmlFileAsync(IFormFile file);
+        Task<(HashSet<int> MatchDays, HashSet<DateTime> MatchDates)> ProcessXmlFileAsync(IFormFile file);
 
         Task<IEnumerable<Value>> GetAllAsync();
 
 		Task<IEnumerable<Value>> GetByDay(int id);
 
-		Task<Value> AddOrUpdateAsync(Value value);
+        Task<IEnumerable<Value>> GetByDate(DateTime date);
+
+        Task<Value> AddOrUpdateAsync(Value value);
 
 	}
 }

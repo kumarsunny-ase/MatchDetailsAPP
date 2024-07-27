@@ -1,0 +1,112 @@
+/* General styles */
+mat-card {
+  padding: 20px;
+  width: 100%;
+  max-width: auto;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(138, 137, 137, 0.1);
+}
+mat-card-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.5rem;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 20px;
+  min-height: 80vh;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #ffffff;;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: auto;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.upload-form button {
+  margin-top: 20px;
+}
+
+.upload-card {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.upload-form .message-container {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.upload-title {
+  color: #1976d2;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-progress-bar {
+  margin-top: 15px;
+}
+
+.message-container.success .message-card {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.file-label {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.file-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+/* Styles for dropdown container */
+.dropdown-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.dropdown-card {
+  flex: 1;
+  margin: 0 10px;
+}
+
+mat-form-field {
+  width: 100%;
+}

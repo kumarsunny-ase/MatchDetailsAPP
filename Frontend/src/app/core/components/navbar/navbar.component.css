@@ -16,7 +16,11 @@ mat-toolbar a:hover {
 
 .mat-toolbar .mat-icon {
   color: #fff; /* Change icon color */
-  font-size: 27px; /* Change icon size */
+  font-size: 25px; /* Change icon size */
   position: relative;
+}
+.toolbar-title
+{
+  margin-top: 5px;
 }
 

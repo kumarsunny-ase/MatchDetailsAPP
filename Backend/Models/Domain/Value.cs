@@ -11,7 +11,7 @@ namespace MatchDetailsApp.Models.Domain
         public int MatchDay { get; set; }
         public string HomeTeamName { get; set; }
         public string GuestTeamName { get; set; }
-        public string PlannedKickoffTime { get; set; }
+        public DateTime PlannedKickoffTime { get; set; }
         public string StadiumName { get; set; }
 
         // Foreign key to Item
