@@ -15,7 +15,6 @@ This repository contains the source code for a web application built with .NET C
 
 - **Angular Frontend:**
   - Angular Version 18
-  - Single-page application (SPA) architecture
   - Responsive design
   - Authguard to prevent unauthorized access
   - Service for managing API
