@@ -110,7 +110,6 @@ export class AuthComponent {
 
     this.authService.register(registerRequest).subscribe({
       next: (response) => {
-        console.log('Registration response:', response);
         // Show success message
         this.snackBar.open('Registration successful! Please Login', 'Close', {
           duration: 3000,

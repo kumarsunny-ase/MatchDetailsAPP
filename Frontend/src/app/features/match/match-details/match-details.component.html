@@ -4,7 +4,12 @@
         <!-- Home Team Column -->
         <ng-container matColumnDef="homeTeamName">
             <th mat-header-cell *matHeaderCellDef> Home Team </th>
-            <td mat-cell *matCellDef="let detail"> {{ detail.homeTeamName }} </td>
+            <td mat-cell *matCellDef="let detail">
+                <button mat-button class="hover-button" matTooltip="Click to view the team details" matTooltipPosition="right"
+                    (click)="selectTeamName(detail.homeTeamName)">
+                    {{ detail.homeTeamName }}
+                </button>
+            </td>
         </ng-container>
 
         <!-- Guest Team Column -->
@@ -16,7 +21,7 @@
         <!-- Kickoff Time Column -->
         <ng-container matColumnDef="plannedKickoffTime">
             <th mat-header-cell *matHeaderCellDef> Kickoff Time </th>
-            <td mat-cell *matCellDef="let detail"> {{ detail.plannedKickoffTime }} </td>
+            <td mat-cell *matCellDef="let detail"> {{ formatDate(detail.plannedKickoffTime) }} </td>
         </ng-container>
 
         <!-- Stadium Column -->

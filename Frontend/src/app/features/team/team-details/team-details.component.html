@@ -1,0 +1,90 @@
+<div class="team-details-container">
+    <button mat-stroked-button color="primary" (click)="goBack()" class="back-button">
+        <mat-icon>arrow_back</mat-icon> Back
+    </button>
+    <h2>Team Details of: {{ teamName }}</h2>
+    <table mat-table [dataSource]="teamDetails" class="mat-elevation-z8">
+        <!-- Match Day Column -->
+        <ng-container matColumnDef="matchDay">
+            <th mat-header-cell *matHeaderCellDef> Match Day </th>
+            <td mat-cell *matCellDef="let element"> {{ element.matchDay }} </td>
+        </ng-container>
+
+        <!-- Match Type Column -->
+        <ng-container matColumnDef="matchType">
+            <th mat-header-cell *matHeaderCellDef> Match Type </th>
+            <td mat-cell *matCellDef="let element"> {{ element.matchType }} </td>
+        </ng-container>
+
+        <!-- Guest Team Name Column -->
+        <ng-container matColumnDef="guestTeamName">
+            <th mat-header-cell *matHeaderCellDef> Guest Team Name </th>
+            <td mat-cell *matCellDef="let element"> {{ element.guestTeamName }} </td>
+        </ng-container>
+
+        <!-- Planned Kickoff Time Column -->
+        <ng-container matColumnDef="plannedKickoffTime">
+            <th mat-header-cell *matHeaderCellDef> Planned Kickoff Time </th>
+            <td mat-cell *matCellDef="let element"> {{ formatDate(element.plannedKickoffTime) }} </td>
+        </ng-container>
+
+        <!-- Stadium ID Column -->
+        <ng-container matColumnDef="stadiumId">
+            <th mat-header-cell *matHeaderCellDef> Stadium ID </th>
+            <td mat-cell *matCellDef="let element"> {{ element.stadiumId }} </td>
+        </ng-container>
+
+        <!-- Stadium Name Column -->
+        <ng-container matColumnDef="stadiumName">
+            <th mat-header-cell *matHeaderCellDef> Stadium Name </th>
+            <td mat-cell *matCellDef="let element"> {{ element.stadiumName }} </td>
+        </ng-container>
+
+        <!-- Season Column -->
+        <ng-container matColumnDef="season">
+            <th mat-header-cell *matHeaderCellDef> Season </th>
+            <td mat-cell *matCellDef="let element"> {{ element.season }} </td>
+        </ng-container>
+
+        <!-- Competition ID Column -->
+        <ng-container matColumnDef="competitionId">
+            <th mat-header-cell *matHeaderCellDef> Competition ID </th>
+            <td mat-cell *matCellDef="let element"> {{ element.competitionId }} </td>
+        </ng-container>
+
+        <!-- Competition Name Column -->
+        <ng-container matColumnDef="competitionName">
+            <th mat-header-cell *matHeaderCellDef> Competition Name </th>
+            <td mat-cell *matCellDef="let element"> {{ element.competitionName }} </td>
+        </ng-container>
+
+        <!-- Competition Type Column -->
+        <ng-container matColumnDef="competitionType">
+            <th mat-header-cell *matHeaderCellDef> Competition Type </th>
+            <td mat-cell *matCellDef="let element"> {{ element.competitionType }} </td>
+        </ng-container>
+
+        <!-- Match Date Fixed Column -->
+        <ng-container matColumnDef="matchDateFixed">
+            <th mat-header-cell *matHeaderCellDef> Match Date Fixed </th>
+            <td mat-cell *matCellDef="let element"> {{ formatDate(element.matchDateFixed) }} </td>
+        </ng-container>
+
+        <!-- Start Date Column -->
+        <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef> Start Date </th>
+            <td mat-cell *matCellDef="let element"> {{ formatDate(element.startDate) }} </td>
+        </ng-container>
+
+        <!-- End Date Column -->
+        <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef> End Date </th>
+            <td mat-cell *matCellDef="let element"> {{ formatDate(element.endDate) }} </td>
+        </ng-container>
+
+        <!-- Table Header -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- Table Rows -->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

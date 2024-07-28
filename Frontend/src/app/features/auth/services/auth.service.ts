@@ -53,9 +53,25 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.clear();
+    if (this.isLocalStorageAvailable()) {
+      localStorage.clear();
+    } else {
+      console.warn('localStorage is not available.');
+    }
     this.cookieService.delete('Authorization', '/');
     this.$user.next(undefined);
+  }
+
+  // Clear the local storage
+  private isLocalStorageAvailable(): boolean {
+    try {
+      const testKey = 'test';
+      localStorage.setItem(testKey, 'testValue');
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   register(request: RegisterRequest): Observable<RegisterResponse> {

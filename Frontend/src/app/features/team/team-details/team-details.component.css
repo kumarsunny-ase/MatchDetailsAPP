@@ -1,0 +1,36 @@
+.team-details-container {
+  margin: 20px;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center; /* Center align the h2 text */
+  font-size: 1.5em; /* Adjust the font size */
+  font-weight: bold; /* Make the text bold */
+}
+
+.team-details-header {
+  width: 100%;
+  margin-bottom: 10px; /* Adds some space between the header and the table */
+}
+
+.team-details-header th {
+  text-align: center; /* Center align the table header text */
+  font-size: 1.5em; /* Adjust the font size */
+  background-color: #f5f5f5; /* Adds a background color to the header */
+  padding: 10px; /* Adjusts the padding */
+  font-weight: bold; /* Make the text bold */
+}
+
+.mat-header-cell {
+  font-weight: bold; /* Make the header cells bold */
+}
+
+.mat-cell, .mat-header-cell {
+  text-align: center; /* Center align the text in all table cells */
+  padding: 8px; /* Add padding to table cells */
+}

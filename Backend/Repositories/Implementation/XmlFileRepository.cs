@@ -12,7 +12,7 @@ namespace MatchDetailsApp.Repositories.Implementation
     /// Repository for handling XML file processing and database operations related to match details.
     /// </summary>
     public class XmlFileRepository : IXmlFileRepository
-	{
+    {
         private readonly MatchDetailsDbContext _matchDetailsDbContext;
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace MatchDetailsApp.Repositories.Implementation
         /// </summary>
         /// <param name="matchDetailsDbContext">The database context used for accessing match details.</param>
         public XmlFileRepository(MatchDetailsDbContext matchDetailsDbContext)
-		{
+        {
             _matchDetailsDbContext = matchDetailsDbContext;
         }
 
@@ -39,26 +39,51 @@ namespace MatchDetailsApp.Repositories.Implementation
                 var xmlDoc = new XmlDocument();
                 xmlDoc.Load(stream);
 
+                // Select all nodes with the tag "Fixture"
                 var nodeList = xmlDoc.DocumentElement.SelectNodes("/PutDataRequest/Fixtures/Fixture");
+
+                // Iterate data through each node in the list
                 foreach (XmlNode node in nodeList)
                 {
+                    // Extract and parse match details from XML attributes
                     var matchId = node.Attributes["MatchId"].Value;
                     var matchDay = int.Parse(node.Attributes["MatchDay"].Value);
-                    matchDays.Add(matchDay);
+                    var MatchType = node.Attributes["MatchType"]?.Value;
                     var homeTeamName = node.Attributes["HomeTeamName"].Value;
                     var guestTeamName = node.Attributes["GuestTeamName"].Value;
-                    var plannedKickoffTime = DateTime.Parse(node.Attributes["PlannedKickoffTime"].Value); ;
-                    matchDates.Add(plannedKickoffTime);
+                    var plannedKickoffTime = DateTime.Parse(node.Attributes["PlannedKickoffTime"].Value);
+                    var stadiumId = node.Attributes["StadiumId"]?.Value;
                     var stadiumName = node.Attributes["StadiumName"].Value;
+                    var season = node.Attributes["Season"]?.Value;
+                    var competitionId = node.Attributes["CompetitionId"]?.Value;
+                    var competitionName = node.Attributes["CompetitionName"]?.Value;
+                    var competitionType = node.Attributes["CompetitionType"]?.Value;
+                    var matchDateFixed = bool.Parse(node.Attributes["MatchDateFixed"]?.Value ?? "false");
+                    var startDate = DateTime.Parse(node.Attributes["StartDate"].Value);
+                    var endDate = DateTime.Parse(node.Attributes["EndDate"].Value);
+
+
+                    // Add extracted values to the respective lists
+                    matchDays.Add(matchDay);
+                    matchDates.Add(plannedKickoffTime);
 
                     var newValue = new Value
                     {
                         MatchId = matchId,
                         MatchDay = matchDay,
+                        MatchType = MatchType,
                         HomeTeamName = homeTeamName,
                         GuestTeamName = guestTeamName,
                         PlannedKickoffTime = plannedKickoffTime,
-                        StadiumName = stadiumName
+                        StadiumId = stadiumId,
+                        StadiumName = stadiumName,
+                        Season = season,
+                        CompetitionId = competitionId,
+                        CompetitionName = competitionName,
+                        CompetitionType = competitionType,
+                        MatchDateFixed = matchDateFixed,
+                        StartDate = startDate,
+                        EndDate = endDate
                     };
 
                     // Add or update the value in the database
@@ -73,9 +98,9 @@ namespace MatchDetailsApp.Repositories.Implementation
         /// Retrieves all match details from the database.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a list of all match details.</returns>
-        public async Task<IEnumerable<Value>> GetAllAsync()
+        public async Task<IEnumerable<Value>> GetAllAsync(string teamName)
         {
-            return await _matchDetailsDbContext.Values.ToListAsync();
+            return await _matchDetailsDbContext.Values.Where(x => x.HomeTeamName == teamName).ToListAsync();
         }
 
         /// <summary>
@@ -90,6 +115,11 @@ namespace MatchDetailsApp.Repositories.Implementation
                 .ToListAsync();
         }
 
+        // <summary>
+        /// Retrieves match details for a specific match date.
+        /// </summary>
+        /// <param name="id">The match date to filter by.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a list of match details for the specified match date.
         public async Task<IEnumerable<Value>> GetByDate(DateTime matchDate)
         {
             // Parse the date string from the format received from the frontend (assuming MM/DD/YYYY)
@@ -125,10 +155,19 @@ namespace MatchDetailsApp.Repositories.Implementation
             {
                 // Update existing record
                 existingValue.MatchDay = value.MatchDay;
+                existingValue.MatchType = value.MatchType;
                 existingValue.HomeTeamName = value.HomeTeamName;
                 existingValue.GuestTeamName = value.GuestTeamName;
                 existingValue.PlannedKickoffTime = value.PlannedKickoffTime;
+                existingValue.StadiumId = value.StadiumId;
                 existingValue.StadiumName = value.StadiumName;
+                existingValue.Season = value.Season;
+                existingValue.CompetitionId = value.CompetitionId;
+                existingValue.CompetitionName = value.CompetitionName;
+                existingValue.CompetitionType = value.CompetitionType;
+                existingValue.MatchDateFixed = value.MatchDateFixed;
+                existingValue.StartDate = value.StartDate;
+                existingValue.EndDate = value.EndDate;
             }
             else
             {
@@ -139,10 +178,20 @@ namespace MatchDetailsApp.Repositories.Implementation
                 {
                     MatchId = value.MatchId,
                     MatchDay = value.MatchDay,
+                    MatchType = value.MatchType,
                     HomeTeamName = value.HomeTeamName,
                     GuestTeamName = value.GuestTeamName,
                     PlannedKickoffTime = value.PlannedKickoffTime,
+                    StadiumId = value.StadiumId,
                     StadiumName = value.StadiumName,
+                    Season = value.Season,
+                    CompetitionId = value.CompetitionId,
+                    CompetitionName = value.CompetitionName,
+                    CompetitionType = value.CompetitionType,
+                    MatchDateFixed = value.MatchDateFixed,
+                    StartDate = value.StartDate,
+                    EndDate = value.EndDate,
+
                     Item = newItem // Set the new Item
                 };
 

@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ValueDto } from '../models/ValueDto';
 import { CookieService } from 'ngx-cookie-service';
 import { MatchDateValueDto } from '../models/match-dateValue-request';
+import { TeamDetailsDto } from '../models/team-details.model';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +58,16 @@ export class MatchListService {
 
   setMatchDates(matchDates: any[]): void {
     this.matchDateSubject.next(matchDates);
-    console.log(matchDates)
+  }
+
+  getTeamDetails(teamName: string): Observable<TeamDetailsDto[]> {
+    return this.http.get<TeamDetailsDto[]>(
+      `${this.apiUrl}/byTeamName/${teamName}`,
+      {
+        headers: {
+          Authorization: this.cookieService.get('Authorization'),
+        },
+      }
+    );
   }
 }

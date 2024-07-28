@@ -71,7 +71,7 @@ namespace MatchDetailsApp.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An unexpected error occurred. Please try again later : {ex.Message}");
             }
-            
+
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace MatchDetailsApp.Controllers
                 // Return a 500 status code with error message if an unexpected error occurs
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An unexpected error occurred. Please try again later: {ex.Message}");
             }
-            
+
         }
     }
 }

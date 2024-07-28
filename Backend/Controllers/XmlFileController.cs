@@ -38,7 +38,7 @@ namespace MatchDetailsApp.Controllers
         /// <param name="file">The XML file containing match data.</param>
         /// <returns>A response indicating the result of the upload operation.</returns>
         [HttpPost("upload")]
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UploadXml(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -66,23 +66,32 @@ namespace MatchDetailsApp.Controllers
         }
 
         /// <summary>
-        /// Retrieves all match data.
+        /// Retrieves the details of matches for a given team name.
         /// </summary>
-        /// <returns>A list of all match data.</returns>
-        [HttpGet]
+        /// <param name="teamName">The name of the team for which match details are to be retrieved.</param>
+        /// <returns>A list of match details for the specified team wrapped in an ActionResult. Returns a 500 status code if an error occurs.</returns>
+        [HttpGet("byTeamName/{teamName}")]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult<IEnumerable<ValueDto>>> GetAll()
-        {
+        public async Task<ActionResult<IEnumerable<ValueDto>>> GetTeamDetails(string teamName)
+         {
             try
             {
-                var values = await _xmlFileRepository.GetAllAsync();
+                var values = await _xmlFileRepository.GetAllAsync(teamName);
                 var response = values.Select(value => new ValueDto
                 {
                     MatchDay = value.MatchDay,
-                    HomeTeamName = value.HomeTeamName,
+                    MatchType = value.MatchType,
                     GuestTeamName = value.GuestTeamName,
                     PlannedKickoffTime = value.PlannedKickoffTime,
+                    StadiumId = value.StadiumId,
                     StadiumName = value.StadiumName,
+                    Season = value.Season,
+                    CompetitionId = value.CompetitionId,
+                    CompetitionName = value.CompetitionName,
+                    CompetitionType = value.CompetitionType,
+                    MatchDateFixed = value.MatchDateFixed,
+                    StartDate = value.StartDate,
+                    EndDate = value.EndDate,
                 }).ToList();
 
                 return Ok(response);
@@ -123,6 +132,11 @@ namespace MatchDetailsApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves match data for a specific match date.
+        /// </summary>
+        /// <param name="matchDate">The match date to filter by.</param>
+        /// <returns>A list of match data for the specified match date.</returns>
         [HttpGet("byMatchDate/{matchDate}")]
         //[Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<MatchDateValueDto>>> GetByMatchDate(DateTime matchDate)

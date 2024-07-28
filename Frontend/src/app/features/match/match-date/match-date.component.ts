@@ -78,6 +78,14 @@ export class MatchDateComponent implements OnInit {
   }
 
   formatDate(date: Date): string | null {
-    return this.datePipe.transform(date, 'fullDate'); // Customize format as needed
+    return this.datePipe.transform(date, 'fullDate');
+  }
+
+  selectTeamName(teamName: string): void {
+    if (teamName) {
+      this.router.navigate(['/team/details'], {
+        queryParams: { tName: teamName },
+      });
+    }
   }
 }

@@ -3,11 +3,13 @@ import { ValueDto } from '../../models/ValueDto';
 import { MatchListService } from '../../services/match-list.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule, DatePipe, Location } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOption, MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-match-details',
@@ -19,7 +21,10 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatOption,
     MatSelectModule,
+    MatTooltip,
+    MatIcon,
   ],
+  providers: [DatePipe],
   templateUrl: './match-details.component.html',
   styleUrl: './match-details.component.css',
 })
@@ -40,8 +45,8 @@ export class MatchDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private matchListService: MatchListService,
-    private location: Location,
-    private router: Router
+    private router: Router,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -78,5 +83,17 @@ export class MatchDetailsComponent implements OnInit {
       console.error('Selected matchDay is undefined or invalid');
       this.errorMessage = 'Please select a valid match day.';
     }
+  }
+
+  selectTeamName(teamName: string): void {
+    if (teamName) {
+      this.router.navigate(['/team/details'], {
+        queryParams: { tName: teamName },
+      });
+    }
+  }
+
+  formatDate(date: Date): string | null {
+    return this.datePipe.transform(date, 'fullDate'); // Customize format as needed
   }
 }

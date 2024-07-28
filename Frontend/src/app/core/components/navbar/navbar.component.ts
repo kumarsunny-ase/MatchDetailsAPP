@@ -45,6 +45,6 @@ export class NavbarComponent implements OnInit {
 
   onLogout() {
     this.authService.logout();
-    this.router.navigateByUrl('/'); // Navigate to root after logout
+    this.router.navigateByUrl('/');
   }
 }
