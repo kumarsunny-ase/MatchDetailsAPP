@@ -1,10 +1,5 @@
 .example-card {
-    max-width: 400px;
-  }
-  
-  .example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
+    max-width: 500px;
   }
   .center-content {
       margin-top: 100px;
@@ -17,11 +12,11 @@
   }
   
   .example-full-width {
-      margin-top: 10px;
+    margin-top: 10px;
     width: 100%;
   }
   .mat-button{
-      margin-top: 10px;
+    margin-top: 10px;
     width: 100%;
     color: white;
     height: 40px;

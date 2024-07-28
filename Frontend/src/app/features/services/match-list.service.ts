@@ -47,7 +47,6 @@ export class MatchListService {
   getMatchesByDate(date: Date): Observable<MatchDateValueDto[]> {
     // Format the date in a suitable string format if needed
     const formattedDate = date.toISOString().split('T')[0];
-    console.log('from service', formattedDate); // Example format YYYY-MM-DD
     return this.http.get<MatchDateValueDto[]>(
       `${this.apiUrl}/byMatchDate/${formattedDate}`
     );

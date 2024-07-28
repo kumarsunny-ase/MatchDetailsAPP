@@ -1,25 +1,30 @@
-/* match-details.component.css */
-
-.match-day-title {
-  text-align: center;
-  margin: 2px 0; /* Optional: Adjust margin as needed */
+.container {
+  margin: 15px;
 }
 
-.mat-table {
-  width: 80%;
-  max-width: 800px;
-  border-collapse: collapse;
-  margin: 16px auto; /* Add margin as needed */
+.match-card {
+  margin-bottom: 16px;
+  margin-left: 100px;
 }
 
 .mat-header-cell {
-    font-size: 16px;
-    font-weight: bold; /* Make text bold */
-    text-align: center; /* Center-align text */
-    padding: 12px; /* Add padding for spacing */
-    border: 1px solid rgba(25, 24, 24, 0.12); /* Light border around cells */
-    border-bottom: 2px solid #004d40; /* Bottom border color */
-    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.12); 
+  background-color: #f5f5f5; /* Light gray background */
+  font-weight: bold;
+}
+
+.mat-row:nth-child(even) {
+  background-color: #f9f9f9; /* Alternating row colors */
+}
+
+.mat-row:hover {
+  background-color: #e0e0e0; /* Highlight on hover */
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 16px;
+  font-size: 1.2em;
+  color: #757575; /* Gray color for no data message */
 }
 
 .dropdown-container {
@@ -31,6 +36,14 @@
 .dropdown-card {
   width: 100%;
   max-width: 400px;
+}
+
+mat-card-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #111113;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .hover-button {

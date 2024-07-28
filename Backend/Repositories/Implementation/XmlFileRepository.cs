@@ -100,7 +100,9 @@ namespace MatchDetailsApp.Repositories.Implementation
         /// <returns>A task that represents the asynchronous operation. The task result contains a list of all match details.</returns>
         public async Task<IEnumerable<Value>> GetAllAsync(string teamName)
         {
-            return await _matchDetailsDbContext.Values.Where(x => x.HomeTeamName == teamName).ToListAsync();
+            return await _matchDetailsDbContext.Values
+                 .Where(x => x.HomeTeamName == teamName)
+                 .OrderByDescending(x => x.PlannedKickoffTime).ToListAsync();
         }
 
         /// <summary>
@@ -110,9 +112,10 @@ namespace MatchDetailsApp.Repositories.Implementation
         /// <returns>A task that represents the asynchronous operation. The task result contains a list of match details for the specified match day.</returns>
         public async Task<IEnumerable<Value>> GetByDay(int id)
         {
-            return await _matchDetailsDbContext.Values.Where(x => x.MatchDay == id)
-                .Include(x => x.Item).OrderByDescending(x => x.PlannedKickoffTime)
-                .ToListAsync();
+            return await _matchDetailsDbContext.Values
+                 .Where(x => x.MatchDay == id)
+                 .Include(x => x.Item).OrderByDescending(x => x.PlannedKickoffTime)
+                 .ToListAsync();
         }
 
         // <summary>
