@@ -14,7 +14,7 @@ This repository contains the source code for a web application built with .NET C
   - Entity Framework Core for data access
 
 - **Angular Frontend:**
-  - Angular Versio 18
+  - Angular Version 18
   - Single-page application (SPA) architecture
   - Responsive design
   - Authguard to prevent unauthorized access
@@ -31,7 +31,7 @@ The Application process is divided into the following steps:
    
 2. **Login process:** Enter your login credentials to access further functionalities of the application
    
-3. **Upload process:** Choose and upload an XML file to import data into the system.
+3. **Upload process:** Choose and upload an XML file to import data into the system and write to the database.
 
 4. **Show the successful message to the user:** Upon successful upload, a confirmation message will be displayed to the user.
   
@@ -39,7 +39,7 @@ The Application process is divided into the following steps:
    
 6. **Match Date Selection:** Use the dropdown list to select a specific match date and view the match schedule for that date.
     
-7. **Team details:** Click on a team name to view detailed information about the team. This feature is available on both the match by day and match by date pages. Users can navigate back and select another team to view its details.
+7. **Team details:** Click on a team name to view detailed information about the team. This feature is available on both the match-by-day and match-by-date pages. Users can navigate back and select another team to view its details.
 
 
 ## Project Objectives
@@ -50,7 +50,7 @@ This project aims to achieve the following objectives:
 
 - **Security:** Employ best practices for data security to protect user data and prevent unauthorized access.
 
-- **Usability:** Design an intuitive user interface and user experience to make the registration process smooth and easy to understand.
+- **Usability:** Design an intuitive user interface and user experience to make the process smooth and easy to understand.
 
 - **Maintainability:** Write clean, modular, and well-documented code to facilitate future maintenance and updates.
 
