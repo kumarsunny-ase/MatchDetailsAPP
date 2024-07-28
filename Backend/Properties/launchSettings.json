@@ -39,7 +39,7 @@
     "MatchDetailsApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:6516;http://localhost:24285",
+      "applicationUrl": "https://localhost:39079;http://localhost:33095",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

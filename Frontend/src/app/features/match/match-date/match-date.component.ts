@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-match-date',
@@ -22,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatTableModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatTooltip,
     CommonModule,
   ],
   providers: [DatePipe],
