@@ -45,6 +45,7 @@ export class FileUploadComponent {
   selectedMatchDay: number | null = null;
   matchDetails: any[] = [];
   matches!: Observable<MatchDateValueDto[]>;
+  showGoToSelectMatchButton: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -85,6 +86,7 @@ export class FileUploadComponent {
             }
             this.matchListService.setMatchDays(this.matchDays);
             this.matchListService.setMatchDates(this.matchDates);
+            this.showGoToSelectMatchButton = true;
           } else {
             this.errorMessage = `Unexpected response status: ${response.status}`;
           }
@@ -97,29 +99,8 @@ export class FileUploadComponent {
     }
   }
 
-  onMatchDaySelect(selectedMatchDay: number): void {
-    if (selectedMatchDay) {
-      // Navigate to match details page with the selected match day as a query parameter
-      this.router.navigate(['/match/details'], {
-        queryParams: { day: selectedMatchDay },
-      });
-    } else {
-      console.error('Selected matchDay is undefined or invalid');
-      this.errorMessage = 'Please select a valid match day.';
-    }
-  }
-
-  onMatchDateSelect(selectedDate: Date): void {
-    if (selectedDate) {
-      // Navigate to match details page with the selected date as a query parameter
-      this.router.navigate(['/match/date'],
-        {
-        queryParams: { date: selectedDate },
-    });
-    } else {
-      console.error('Selected date is undefined or invalid');
-      this.errorMessage = 'Please select a valid date.';
-    }
+  goToSelectMatch(): void {
+    this.router.navigate(['/match/select']);
   }
 
   // Method to format date using DatePipe

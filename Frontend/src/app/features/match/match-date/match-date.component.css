@@ -67,3 +67,17 @@ mat-card-title {
   border-radius: 4px;
   text-align: right;
 }
+
+.back-button {
+  background-color: #ffffff;
+  color: #224ed2;
+  padding: 5px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: flex;
+  border: 2px solid #b2b2b2;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}

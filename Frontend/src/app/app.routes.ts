@@ -5,6 +5,7 @@ import { AuthComponent } from './features/auth/auth/auth.component';
 import { authGuard } from './features/auth/guards/auth.guard';
 import { MatchDateComponent } from './features/match/match-date/match-date.component';
 import { TeamDetailsComponent } from './features/team/team-details/team-details.component';
+import { MatchSelectComponent } from './features/match/match-select/match-select.component';
 
 export const routes: Routes = [
   {
@@ -31,4 +32,9 @@ export const routes: Routes = [
     component: TeamDetailsComponent,
     canActivate: [authGuard],
   },
+  {
+    path: 'match/select',
+    component: MatchSelectComponent,
+    canActivate: [authGuard]
+  }
 ];

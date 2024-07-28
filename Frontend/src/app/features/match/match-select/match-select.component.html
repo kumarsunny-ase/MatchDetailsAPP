@@ -1,0 +1,22 @@
+<mat-card class="dropdown-card">
+    <mat-card-header>
+        <mat-card-title>Select Menu to Watch Match Details</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="dropdown-container">
+            <mat-form-field appearance="fill" class="dropdown-item" *ngIf="matchDates.length > 0">
+                <mat-label>Select Match Day</mat-label>
+                <mat-select (selectionChange)="onMatchDaySelect($event.value)">
+                    <mat-option *ngFor="let day of matchDays" [value]="day">{{ day }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="dropdown-item" *ngIf="matchDays.length > 0">
+                <mat-label>Select Match Date</mat-label>
+                <mat-select (selectionChange)="onMatchDateSelect($event.value)">
+                    <mat-option *ngFor="let date of matchDates" [value]="date">{{ formatDate(date) }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </mat-card-content>
+</mat-card>

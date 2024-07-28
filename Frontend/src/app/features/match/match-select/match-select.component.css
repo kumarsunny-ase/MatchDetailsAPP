@@ -1,0 +1,40 @@
+
+mat-card-title {
+    font-size: 1.5rem; /* Slightly larger font for the title */
+    font-weight: bold; /* Make the title bold */
+    text-align: center; /* Center the text */
+    margin: 0;
+     border-bottom: 2px solid #ccc;
+}
+
+mat-card-header {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically if needed */
+    text-align: center;
+    padding: 16px; /* Adjust padding if necessary */
+}
+
+.dropdown-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 30vh;
+}
+
+
+.dropdown-item {
+    flex: 1;
+    max-width: 400px;
+}
+
+.dropdown-card {
+    margin: 50px;
+    padding: 20px;
+}
+
+.go-to-select-match-btn {
+    display: block;
+    margin: 10px auto;
+    padding: 8px 16px;
+}

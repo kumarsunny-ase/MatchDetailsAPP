@@ -24,33 +24,10 @@
                         </mat-card>
                     </div>
                 </div>
-
-                <!-- Dropdown container within the form -->
-                <div class="dropdown-container" fxLayout="row" fxLayoutAlign="space-around center"
-                    *ngIf="matchDays.length > 0">
-                    <mat-card class="dropdown-card">
-                        <mat-card-content>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Select Match By Day</mat-label>
-                                <mat-select (selectionChange)="onMatchDaySelect($event.value)">
-                                    <mat-option *ngFor="let day of matchDays" [value]="day">{{ day }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </mat-card-content>
-                    </mat-card>
-
-                    <mat-card class="dropdown-card" *ngIf="matchDates.length > 0">
-                        <mat-card-content>
-                            <mat-form-field appearance="fill">
-                                <mat-label>Select Match By Date</mat-label>
-                                <mat-select (selectionChange)="onMatchDateSelect($event.value)">
-                                    <mat-option *ngFor="let date of matchDates" [value]="date">{{ formatDate(date)}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </mat-card-content>
-                    </mat-card>
-                </div>
             </form>
         </mat-card-content>
     </mat-card>
+    <button *ngIf="showGoToSelectMatchButton" mat-raised-button color="accent" (click)="goToSelectMatch()">
+        Go to Select Match
+    </button>
 </div>

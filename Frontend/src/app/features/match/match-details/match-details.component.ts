@@ -46,6 +46,7 @@ export class MatchDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private matchListService: MatchListService,
     private router: Router,
+    private location: Location,
     private datePipe: DatePipe
   ) {}
 
@@ -95,5 +96,9 @@ export class MatchDetailsComponent implements OnInit {
 
   formatDate(date: Date): string | null {
     return this.datePipe.transform(date, 'fullDate'); // Customize format as needed
+  }
+
+  goBack(): void {
+    this.router.navigateByUrl('/match/select'); // Navigate back to the previous page
   }
 }

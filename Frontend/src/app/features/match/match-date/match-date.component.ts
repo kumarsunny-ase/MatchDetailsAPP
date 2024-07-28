@@ -11,6 +11,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-match-date',
@@ -24,6 +25,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatNativeDateModule,
     MatSelectModule,
     MatTooltip,
+    MatIcon,
     CommonModule,
   ],
   providers: [DatePipe],
@@ -89,5 +91,9 @@ export class MatchDateComponent implements OnInit {
         queryParams: { tName: teamName },
       });
     }
+  }
+
+  goBack(): void {
+    this.router.navigateByUrl('/match/select'); // Navigate back to the previous page
   }
 }
