@@ -110,3 +110,8 @@ mat-progress-bar {
 mat-form-field {
   width: 100%;
 }
+
+my-icon {
+  margin-right: 5px;
+  color: white; /* Adjust color as needed */
+}

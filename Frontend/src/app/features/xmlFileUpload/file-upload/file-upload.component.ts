@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatchDateValueDto } from '../../models/match-dateValue-request';
 import { Observable } from 'rxjs';
+import { MatIcon } from '@angular/material/icon';
 
 
 @Component({
@@ -28,6 +29,7 @@ import { Observable } from 'rxjs';
     MatSelectModule,
     MatFormFieldModule,
     MatProgressBarModule,
+    MatIcon,
     CommonModule,
   ],
   providers: [DatePipe],
