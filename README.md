@@ -18,7 +18,7 @@ This repository contains the source code for a web application built with .NET C
   - Responsive design
   - Authguard to prevent unauthorized access
   - Service for managing API
-  - Angular material
+  - Angular Material
   - Angular flex
   - Angular Forms
 
