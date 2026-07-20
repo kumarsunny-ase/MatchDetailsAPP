@@ -1,4 +1,5 @@
-﻿using MatchDetailsApp.Data;
+﻿using System.ComponentModel;
+using MatchDetailsApp.Data;
 using MatchDetailsApp.Models.Domain;
 using MatchDetailsApp.Repositories;
 using MatchDetailsApp.Repositories.Implementation;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ModelContextProtocol.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +71,11 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services
+    .AddMcpServer()
+    .WithStdioServerTransport()
+    .WithToolsFromAssembly();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -101,4 +108,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-

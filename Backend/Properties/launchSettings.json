@@ -12,7 +12,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5162",
+      "applicationUrl": "https://localhost:7296;http://localhost:5162",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -39,7 +39,7 @@
     "MatchDetailsApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:39079;http://localhost:33095",
+      "applicationUrl": "https://localhost:61278;http://localhost:30884",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

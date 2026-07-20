@@ -48,7 +48,11 @@ export class MatchListService {
     // Format the date in a suitable string format if needed
     const formattedDate = date.toISOString().split('T')[0];
     return this.http.get<MatchDateValueDto[]>(
-      `${this.apiUrl}/byMatchDate/${formattedDate}`
+      `${this.apiUrl}/byMatchDate/${formattedDate}`, {
+        headers: {
+          Authorization: this.cookieService.get('Authorization'),
+        },
+      }
     );
   }
 

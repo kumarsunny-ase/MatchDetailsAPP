@@ -1,16 +1,20 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Xml;
 using MatchDetailsApp.Data;
 using MatchDetailsApp.Models.Domain;
 using MatchDetailsApp.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using ModelContextProtocol.Server;
 
 namespace MatchDetailsApp.Repositories.Implementation
 {
     /// <summary>
     /// Repository for handling XML file processing and database operations related to match details.
     /// </summary>
+    
+    [McpServerToolType]
     public class XmlFileRepository : IXmlFileRepository
     {
         private readonly MatchDetailsDbContext _matchDetailsDbContext;
@@ -123,6 +127,8 @@ namespace MatchDetailsApp.Repositories.Implementation
         /// </summary>
         /// <param name="id">The match date to filter by.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a list of match details for the specified match date.
+       
+        [McpServerTool, Description("Retrieves match details for a specific match date.")]
         public async Task<IEnumerable<Value>> GetByDate(DateTime matchDate)
         {
             // Parse the date string from the format received from the frontend (assuming MM/DD/YYYY)

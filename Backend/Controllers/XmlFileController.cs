@@ -138,7 +138,7 @@ namespace MatchDetailsApp.Controllers
         /// <param name="matchDate">The match date to filter by.</param>
         /// <returns>A list of match data for the specified match date.</returns>
         [HttpGet("byMatchDate/{matchDate}")]
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<MatchDateValueDto>>> GetByMatchDate(DateTime matchDate)
         {
             try
