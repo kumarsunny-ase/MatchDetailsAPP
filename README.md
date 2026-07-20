@@ -1,67 +1,216 @@
-# matchDetailsApp
+# MatchDetailsApp
 
-This project is a combination of .NET Core backend and Angular frontend.
+## Overview
 
-## Description
+**MatchDetailsApp** is a full-stack web application built with **.NET 8**, **ASP.NET Core Web API**, and **Angular 18**. The application allows users to register, authenticate, upload XML match data, and explore football match information through an intuitive user interface.
 
-This repository contains the source code for a web application built with .NET Core for the backend and Angular for the frontend. The backend is responsible for handling data storage, business logic, and API endpoints, while the frontend provides a user-friendly interface for interacting with the application.
+The project follows a modern client-server architecture with a secure REST API, SQL Server database, and a responsive Angular frontend.
 
-## Features
+---
 
-- **.NET Core Backend:**
-  - RESTful API endpoints
-  - Data storage with MS SQL Server
-  - Entity Framework Core for data access
+# ✨ New Feature: MCP Server Integration
 
-- **Angular Frontend:**
-  - Angular Version 18
-  - Responsive design
-  - Authguard to prevent unauthorized access
-  - Service for managing API
-  - Angular Material
-  - Angular flex
-  - Angular Forms
+This project now includes **Model Context Protocol (MCP) Server** integration to provide AI-assisted development and maintenance capabilities.
 
-## Application Process
+The MCP Server enables AI tools (such as **GitHub Copilot**, **Claude Desktop**, **VS Code AI extensions**, or other compatible MCP clients) to interact directly with the project, providing richer context and improving developer productivity.
 
-The Application process is divided into the following steps:
+## 🚀 Benefits of MCP Integration
 
-1. **Registration process:** Navigate to the registration section of the application to sign up as a new user.
-   
-2. **Login process:** Enter your login credentials to access further functionalities of the application
-   
-3. **Upload process:** Choose and upload an XML file to import data into the system and write to the database.
+- AI understands the entire project structure
+- Faster debugging and code analysis
+- Context-aware code generation
+- Intelligent API and database assistance
+- Improved developer productivity
+- Easier maintenance of large codebases
+- Better understanding of business logic across backend and frontend
 
-4. **Show the successful message to the user:** Upon successful upload, a confirmation message will be displayed to the user.
-  
-5. **Match Day Selection:** Use the dropdown list to select a specific match day and view available matches.
-   
-6. **Match Date Selection:** Use the dropdown list to select a specific match date and view the match schedule for that date.
-    
-7. **Team details:** Click on a team name to view detailed information about the team. This feature is available on both the match-by-day and match-by-date pages. Users can navigate back and select another team to view its details.
+---
 
+# 🏗️ Architecture
 
-## Project Objectives
+```text
+                Angular 18 Frontend
+                        │
+                        ▼
+            ASP.NET Core REST API
+                        │
+                        ▼
+                Business Logic Layer
+                        │
+                        ▼
+             Entity Framework Core
+                        │
+                        ▼
+               Microsoft SQL Server
+```
 
-This project aims to achieve the following objectives:
+The MCP Server provides AI with contextual access to the project, making development, debugging, and maintenance more efficient.
 
-- **Fault Tolerance:** Implement measures to handle errors gracefully and ensure the application remains operational even in the face of failures.
+---
 
-- **Security:** Employ best practices for data security to protect user data and prevent unauthorized access.
+# ✨ Features
 
-- **Usability:** Design an intuitive user interface and user experience to make the process smooth and easy to understand.
+## 🔹 Backend (.NET 8)
 
-- **Maintainability:** Write clean, modular, and well-documented code to facilitate future maintenance and updates.
+- ASP.NET Core RESTful APIs
+- Entity Framework Core
+- Microsoft SQL Server
+- JWT Authentication
+- Role-Based Authorization
+- XML File Processing
+- Business Logic Implementation
+- Dependency Injection
+- Repository Pattern
+- Error Handling & Validation
 
-## Prerequisites
+---
 
-Before running the application, ensure you have the following installed:
+## 🔹 Frontend (Angular 18)
 
-- [.NET Core SDK](https://dotnet.microsoft.com/download)
-- [Node.js](https://nodejs.org/)
-- [Angular CLI](https://angular.io/cli)
-- [Microsoft SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+- Angular 18
+- Angular Material
+- Angular Flex Layout
+- Responsive UI
+- Route Guards (AuthGuard)
+- Reactive Forms
+- API Services
+- Authentication
+- User-Friendly Dashboard
+- Dynamic Filtering & Navigation
 
-## Important Step
+---
 
-1. **Change the server name in appsettings.json to access the database:** Before using the database and migration, update the server name in the `appsettings.json` file to match your MS SQL Server instance.
+## 🤖 AI Development Support
+
+- MCP Server Integration
+- AI-Assisted Code Navigation
+- Context-Aware Project Understanding
+- Intelligent Debugging Support
+- Faster Feature Implementation
+- Improved Developer Workflow
+
+---
+
+# 🔄 Application Workflow
+
+### 1️⃣ Registration
+
+Create a new user account.
+
+### 2️⃣ Login
+
+Authenticate using your credentials.
+
+### 3️⃣ Upload XML
+
+Upload an XML file containing football match data.
+
+The backend parses the XML and stores the data in SQL Server.
+
+### 4️⃣ Success Notification
+
+A confirmation message is displayed after a successful upload.
+
+### 5️⃣ Match Day Selection
+
+Select a match day to display all available matches.
+
+### 6️⃣ Match Date Selection
+
+Filter matches by a selected date.
+
+### 7️⃣ Team Details
+
+Click on a team to view detailed team information and navigate back to continue browsing.
+
+---
+
+# 🛠️ Technology Stack
+
+## Backend
+
+- C#
+- .NET 8
+- ASP.NET Core Web API
+- Entity Framework Core
+- Microsoft SQL Server
+- JWT Authentication
+
+## Frontend
+
+- Angular 18
+- TypeScript
+- Angular Material
+- Angular Flex Layout
+- HTML5
+- CSS3
+
+## AI & Development Tools
+
+- MCP Server
+- GitHub
+- Git
+- Visual Studio
+- Visual Studio Code
+
+---
+
+# Project Objectives
+
+- Build a secure and scalable web application
+- Provide a responsive and user-friendly interface
+- Process XML data efficiently
+- Maintain clean and modular architecture
+- Improve maintainability through AI-assisted development using MCP
+- Ensure fault tolerance and robust error handling
+
+---
+
+# Prerequisites
+
+Before running the project, install:
+
+- .NET 8 SDK
+- Node.js
+- Angular CLI
+- Microsoft SQL Server
+- Git
+
+---
+
+# ⚙️ Configuration
+
+Update the SQL Server connection string in **appsettings.json** before running the application.
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=YOUR_SERVER_NAME;Database=MatchDetailsDB;Trusted_Connection=True;"
+}
+```
+
+After updating the connection string, run the Entity Framework Core migrations.
+
+---
+
+# 🔒 Security
+
+- JWT Authentication
+- Route Protection (AuthGuard)
+- Secure REST APIs
+- Input Validation
+- Exception Handling
+- Role-Based Authorization
+
+---
+
+# 🚀 Future Improvements
+
+- Docker Support
+- CI/CD Pipeline
+- Azure Cloud Deployment
+- Unit & Integration Testing
+- Real-Time Notifications
+- AI-Powered Developer Workflows using MCP
+- Analytics Dashboard
+
+---
